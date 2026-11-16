@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Calibre",
+      "hasCanvas": false,
+      "bodyTextLen": 1677,
+      "bodyTextHash": "c90448ea6778755fc1fab84a54c1371aac6cba35e8ee68ca8cfc97cbd5b14c94",
+      "bodyTextPrefix": "CALIBRE Calibre Equações de primeiro grau, no ritmo de uma linha",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Calibre",
+      "hasCanvas": false,
+      "bodyTextLen": 606,
+      "bodyTextHash": "4946f8cf48c23ad198c46eda26b788fd7d6bb38c69a8d4ddc2f40b024e7ee0cf",
+      "bodyTextPrefix": "CALIBRE Calibre Equações de primeiro grau, no ritmo de uma linha",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
