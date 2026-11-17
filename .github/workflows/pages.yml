@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - run: npm run build
+        env:
+          GITHUB_PAGES: "1"
+          PAGES_BASE: /primeirograu/
+          VITE_AUTH_ENABLED: "false"
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - name: Locate static site
+        id: out
+        run: |
+          if [ -f .vercel/output/static/primeirograu/index.html ]; then
+            echo "dir=.vercel/output/static/primeirograu" >> "$GITHUB_OUTPUT"
+          elif [ -f .output/public/index.html ]; then
+            echo "dir=.output/public" >> "$GITHUB_OUTPUT"
+          else
+            echo "index.html missing after build" >&2
+            find .vercel .output -name index.html | head -50 >&2
+            exit 1
+          fi
+      - run: cp "${{ steps.out.outputs.dir }}/index.html" "${{ steps.out.outputs.dir }}/404.html"
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.out.outputs.dir }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

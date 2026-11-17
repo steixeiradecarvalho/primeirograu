@@ -520,7 +520,7 @@ test("renders the manifest with the per-app name", () => {
 // fail silently (published apps would just render the app for ?install=1).
 test("vite config keeps the nitro serverDir wiring", () => {
   const viteConfig = readFileSync(join(TEMPLATE_ROOT, "vite.config.ts"), "utf8");
-  assert.match(viteConfig, /serverDir:\s*"\.\/server"/);
+  assert.match(viteConfig, /serverDir: pages \? false : "\.\/server"/);
   assert.match(viteConfig, /grokPwaPlugin\(\)/);
 });
 
