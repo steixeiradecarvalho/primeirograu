@@ -54,7 +54,7 @@ function ScreenBody({ screen }: { screen: ReturnType<typeof useCalibre.getState>
   if (screen.t === "note") {
     return (
       <div className="flex flex-1 flex-col">
-        <Top title="A linha" onBack={() => setScreen(progress.name ? { t: "map" } : { t: "gate" })} />
+        <Top title="A missão" onBack={() => setScreen(progress.name ? { t: "map" } : { t: "gate" })} />
         <Manual />
       </div>
     );
@@ -152,7 +152,7 @@ function Gate() {
   return (
     <div className="flex flex-1 flex-col">
       <Top title="Calibre" kicker="Equações de primeiro grau." />
-      <p className="text-base leading-relaxed">Isola a letra. Se sair no meio, o turno fica neste aparelho.</p>
+      <p className="text-base leading-relaxed">Você dimensiona o foguete. Se sair no meio, a missão fica neste aparelho.</p>
       <form
         className="mt-8"
         onSubmit={(event) => {
@@ -232,8 +232,8 @@ function Map() {
       },
     },
     {
-      title: "Turno da agência",
-      detail: "Ler o problema. Só então isolar.",
+      title: "O lançamento",
+      detail: "Ler o plano. Só então isolar.",
       open: modelOpen,
       done: progress.modelDone,
       go: () => progress.setScreen({ t: "model", which: 1 }),
@@ -243,8 +243,8 @@ function Map() {
   return (
     <div className="flex flex-1 flex-col">
       <Top
-        title={progress.name ? progress.name : "A linha"}
-        kicker="Cinco estações. Um turno. Sem nota."
+        title={progress.name ? progress.name : "A missão"}
+        kicker="Cinco estações. Uma missão. Sem nota."
         lamps={lamps}
       />
       <div className="space-y-3">
@@ -254,7 +254,7 @@ function Map() {
             type="button"
             onClick={() => {
               if (!station.open) {
-                progress.setMapNote("A estação anterior deixa esta pronta. A linha é curta.");
+                progress.setMapNote("A estação anterior abre esta. A missão é curta.");
                 return;
               }
               progress.setMapNote("");
@@ -266,7 +266,7 @@ function Map() {
             <span className="min-w-0">
               <span className="block text-base font-semibold">
                 {station.title}
-                {station.done ? <span className="ml-2 text-sm font-medium text-moss">em ritmo</span> : null}
+                {station.done ? <span className="ml-2 text-sm font-medium text-moss">no plano</span> : null}
                 {!station.open ? <span className="ml-2 text-sm font-medium text-faint">fechada</span> : null}
               </span>
               <span className="mt-1 block text-sm leading-relaxed text-muted">{station.detail}</span>
@@ -289,7 +289,7 @@ function Map() {
           {progress.mapNote}
         </p>
       ) : (
-        <p className="mt-4 text-sm text-faint">Sai no meio se quiser. Quando voltar, a linha está onde você deixou.</p>
+        <p className="mt-4 text-sm text-faint">Sai no meio se quiser. Quando voltar, a missão está onde você deixou.</p>
       )}
       <div className="mt-6 flex flex-col">
         {extraOpen ? (
@@ -300,11 +300,11 @@ function Map() {
         ) : null}
         {progress.modelDone ? (
           <Ghost className="w-full justify-start" onClick={() => progress.setScreen({ t: "debrief" })}>
-            Folha do turno
+            Folha da missão
           </Ghost>
         ) : null}
         <Ghost className="w-full justify-start" onClick={() => progress.setScreen({ t: "note" })}>
-          Como a linha funciona
+          Como a missão conta
         </Ghost>
         <Ghost
           className="w-full justify-start"
@@ -317,7 +317,7 @@ function Map() {
             setArmReset(false);
           }}
         >
-          {armReset ? "Confirmar: zerar o turno" : "Recomeçar o turno"}
+          {armReset ? "Confirmar: zerar a missão" : "Recomeçar a missão"}
         </Ghost>
       </div>
     </div>
@@ -335,7 +335,7 @@ function Principle() {
         <p>
           Uma equação diz: esta conta vale este número. Os dois lados se chamam membros. Esquerdo e direito.
         </p>
-        <p>A letra é a incógnita — o valor que a linha ainda não mediu. Na escola o nome é esse. Aqui também.</p>
+        <p>A letra é a incógnita — o valor que a missão ainda não mediu. Na escola o nome é esse. Aqui também.</p>
         <p>
           Você pode mudar a equação se fizer a mesma coisa nos dois membros. Tirar 9 dos dois. Dividir os dois por
           4. A incógnita não muda. Só fica mais fácil de ver.
@@ -352,7 +352,7 @@ function Principle() {
             setScreen({ t: "solve", i: 0 });
           }}
         >
-          Ver isso na linha
+          Ver isso no foguete
         </Primary>
       </div>
     </div>
@@ -365,15 +365,15 @@ function Debrief() {
   return (
     <div className="flex flex-1 flex-col">
       <Top
-        title="Linha em ritmo"
-        kicker={progress.name ? progress.name : "Turno"}
+        title="Plano fechado"
+        kicker={progress.name ? progress.name : "Missão"}
         onBack={() => progress.setScreen({ t: "map" })}
         lamps={lamps}
       />
       <p className="text-base leading-relaxed">A folha ficou com o que você isolou.</p>
       {progress.notebook.length > 0 ? (
         <div className="mt-5 rounded-card bg-bone p-4 text-ink-bone">
-          <p className="text-xs font-semibold tracking-widest text-quiet">FOLHA DO TURNO</p>
+          <p className="text-xs font-semibold tracking-widest text-quiet">FOLHA DA MISSÃO</p>
           <ul className="mt-3 space-y-2 font-mono text-sm leading-relaxed">
             {progress.notebook.map((line) => (
               <li key={line}>{line}</li>
@@ -388,7 +388,7 @@ function Debrief() {
           <Primary onClick={() => progress.setScreen({ t: "extra" })}>Ficar mais um pouco</Primary>
         )}
         <Ghost className="w-full" onClick={() => progress.setScreen({ t: "map" })}>
-          Voltar à linha
+          Voltar à missão
         </Ghost>
         {progress.model2Done ? null : (
           <Ghost className="w-full" onClick={() => progress.setScreen({ t: "extra" })}>

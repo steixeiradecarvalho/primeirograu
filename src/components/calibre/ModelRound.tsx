@@ -40,7 +40,7 @@ export function ModelRound({
   return (
     <div className="flex flex-1 flex-col">
       <Top
-        title={which === 1 ? "Turno da agência" : "Segundo chamado"}
+        title={which === 1 ? "O lançamento" : "A tripulação"}
         kicker={puzzle.kicker}
         onBack={onBack}
         lamps={lamps}

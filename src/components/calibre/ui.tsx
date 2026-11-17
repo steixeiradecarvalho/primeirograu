@@ -33,7 +33,7 @@ export function Mark({ className }: { className?: string }) {
 
 export function Lamps({ lit, active }: { lit: number; active: number }) {
   return (
-    <div className="flex gap-1.5" role="img" aria-label={`${lit} de 5 estações em ritmo`}>
+    <div className="flex gap-1.5" role="img" aria-label={`${lit} de 5 estações feitas`}>
       {Array.from({ length: 5 }, (_, index) => (
         <span
           key={index}
@@ -66,7 +66,7 @@ export function Top({
             type="button"
             onClick={onBack}
             className="grid size-11 shrink-0 place-items-center rounded-full bg-panel text-bone"
-            aria-label="Voltar à linha"
+            aria-label="Voltar à missão"
           >
             <ArrowLeft className="size-5" />
           </button>
@@ -125,7 +125,7 @@ export function Ghost({
 }
 
 export function Manual() {
-  return <NoteCard kicker="NA LINHA" note={MANUAL} />;
+  return <NoteCard kicker="NO PLANO" note={MANUAL} />;
 }
 
 function NoteCard({

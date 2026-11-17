@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Calibre — um turno para ler expressões e isolar equações de primeiro grau, sem prova e sem pressa.",
+          "Calibre — equações de primeiro grau no plano de um lançamento.",
       },
       { name: "theme-color", content: "#141910" },
     ],

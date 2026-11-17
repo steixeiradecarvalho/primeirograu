@@ -266,6 +266,6 @@ export const useCalibre = create<Store>((set, get) => ({
   reset: () => {
     const next = { ...blank(), name: get().name };
     persist(next);
-    set({ ...next, hydrated: true, screen: { t: "map" }, mapNote: "Turno zerado. A linha espera de novo." });
+    set({ ...next, hydrated: true, screen: { t: "map" }, mapNote: "Missão zerada. O plano espera de novo." });
   },
 }));
