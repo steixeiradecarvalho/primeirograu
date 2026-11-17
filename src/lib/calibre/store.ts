@@ -6,7 +6,6 @@ const KEY = "calibre-turno-v1";
 export type Screen =
   | { t: "gate" }
   | { t: "note" }
-  | { t: "companion" }
   | { t: "map" }
   | { t: "build"; i: number }
   | { t: "value"; i: number }

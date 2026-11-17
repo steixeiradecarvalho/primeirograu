@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
-import { COMPANION, MANUAL } from "@/lib/calibre/content";
+import { MANUAL } from "@/lib/calibre/content";
 import { cx } from "@/lib/calibre/cx";
 
 export function Shell({ children }: { children: ReactNode }) {
@@ -126,10 +126,6 @@ export function Ghost({
 
 export function Manual() {
   return <NoteCard kicker="NA LINHA" note={MANUAL} />;
-}
-
-export function CompanionNote() {
-  return <NoteCard kicker="ACOMPANHAMENTO" note={COMPANION} />;
 }
 
 function NoteCard({

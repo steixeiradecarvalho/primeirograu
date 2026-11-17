@@ -397,29 +397,4 @@ export const MANUAL = {
   ],
 };
 
-export const COMPANION = {
-  title: "Para quem acompanha",
-  lede: "Desenho da sessão. O aluno pode abrir isto; não encontra diagnóstico, nota nem relato da prova.",
-  blocks: [
-    {
-      h: "Por que esta forma",
-      p: "Ele infere a partir de fala curta e perdeu o fio justo quando a aula entrou em equação de primeiro grau. A sessão não revisa a aritmética. Reapresenta o igual como balança, no cenário que já fez sentido: capacidade de uma linha, ritmo por terminal, parte fixa.",
-    },
-    {
-      h: "Uma sentada, três camadas",
-      p: "Leitura monta a expressão e nomeia coeficiente, termo e parêntese no ato, com as trocas clássicas ao lado: somar em vez de multiplicar, parêntese no lugar errado, reserva contada uma vez. Substituição devolve a letra ao lugar de número. Isolar começa guiado — mesmo gesto nos dois lados — e só então vira o atalho da escola, “passar para o outro lado”.",
-    },
-    {
-      h: "Onde o fio costuma cair",
-      p: "Parêntese e incógnita nos dois membros entram como a mesma regra, dita em voz alta, não como capítulo novo. Para quem descarrilhou nesse ponto, a ameaça é a novidade aparente.",
-    },
-    {
-      h: "Autonomia sem humilhação",
-      p: "Sem cronômetro obrigatório, sem vida, sem ranking. Erro que preserva a igualdade é aceito e nomeado. Dica em três degraus, sem custo. “Testar um valor” instala o hábito de checar, que a prova cobra sem avisar. O progresso fica no aparelho.",
-    },
-    {
-      h: "O que olhar depois",
-      p: "A nota de turno, no fim, diz se ele sustentou ax + b = c, o pacote com parêntese e a letra dos dois lados — e se a tradução do texto trocou ritmo com quantidade. A aula seguinte pode ser texto livre para equação, já com o isolamento firme.",
-    },
-  ],
-};
+

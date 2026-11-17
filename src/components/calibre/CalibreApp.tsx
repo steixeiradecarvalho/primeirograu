@@ -1,79 +1,46 @@
 import { useEffect, useState } from "react";
 import { extraPuzzle, BUILD, SOLVE, STATION_GUIDED, VALUE, type SolvePuzzle } from "@/lib/calibre/content";
-import { lineState, useCalibre, type Progress } from "@/lib/calibre/store";
+import { lineState, useCalibre } from "@/lib/calibre/store";
 import { BuildRound } from "./BuildRound";
 import { ModelRound } from "./ModelRound";
 import { SolveRound } from "./SolveRound";
 import { ValueRound } from "./ValueRound";
-import { CompanionNote, Ghost, Manual, Primary, Top } from "./ui";
-
-const FOCUS: Record<string, string> = {
-  "f-2x": "o primeiro isolamento livre",
-  "i-minus": "o termo negativo",
-  "i-axb": "a forma ax + b = c",
-  "i-paren": "o parêntese",
-  "i-both": "a letra nos dois lados",
-  agencia: "a tradução do turno da agência",
-  desistencias: "o segundo chamado",
-};
-
-function lessonNote(progress: Progress): string {
-  const heavy = Object.entries(progress.stallsById)
-    .filter(([, count]) => count >= 3)
-    .map(([id]) => FOCUS[id])
-    .filter((item): item is string => Boolean(item));
-  const hinted = Object.entries(progress.hintsById)
-    .filter(([, count]) => count >= 2)
-    .map(([id]) => FOCUS[id])
-    .filter((item): item is string => Boolean(item));
-  const lines: string[] = [];
-  if (progress.solveDone >= SOLVE.length && heavy.length === 0) {
-    lines.push(
-      "Sustentou ax + b = c, o parêntese e a letra nos dois membros. Próximo passo: escrever a equação a partir do texto, sem opções, e só então isolar.",
-    );
-  }
-  if (heavy.length > 0) {
-    lines.push(
-      `Ponto fino: ${heavy.join(", ")}. Não é buraco de base. É o lugar de narrar um lado de cada vez, juntos.`,
-    );
-  } else if (hinted.length > 0) {
-    lines.push(
-      `O manual foi aberto mais de uma vez em ${hinted.join(", ")}. O princípio está ao alcance; o gesto ainda agradece companhia.`,
-    );
-  }
-  if (progress.modelMisses > 0) {
-    lines.push(
-      "Na tradução do texto, uma leitura chegou a trocar ritmo com quantidade, ou a ordem da operação. É o melhor gancho da aula seguinte.",
-    );
-  }
-  if (lines.length === 0) {
-    return "O turno ainda está em curso. Esta nota se completa quando as estações fecham.";
-  }
-  return lines.join(" ");
-}
+import { Ghost, Manual, Primary, Top } from "./ui";
 
 export function CalibreApp() {
   const hydrate = useCalibre((s) => s.hydrate);
   const screen = useCalibre((s) => s.screen);
-  const setScreen = useCalibre((s) => s.setScreen);
 
   useEffect(() => {
     hydrate();
   }, [hydrate]);
 
+  const atGate = screen.t === "gate";
+
   return (
-    <div className="min-h-dvh bg-ink text-bone lg:grid lg:grid-cols-[minmax(0,40rem)_minmax(18rem,1fr)]">
-      <main className="flex min-h-dvh w-full min-w-0 flex-col overflow-x-hidden px-5 py-6 sm:px-8 lg:px-10">
+    <div
+      className={
+        atGate
+          ? "min-h-dvh bg-ink text-bone"
+          : "min-h-dvh bg-ink text-bone lg:grid lg:grid-cols-[minmax(0,40rem)_minmax(18rem,1fr)]"
+      }
+    >
+      <main
+        className={
+          atGate
+            ? "mx-auto flex min-h-dvh w-full min-w-0 max-w-xl flex-col overflow-x-hidden px-5 py-6 sm:px-8"
+            : "flex min-h-dvh w-full min-w-0 flex-col overflow-x-hidden px-5 py-6 sm:px-8 lg:px-10"
+        }
+      >
         <ScreenBody screen={screen} />
       </main>
-      <aside className="hidden bg-ink lg:block">
-        <div className="sticky top-0 flex max-h-dvh flex-col gap-4 overflow-auto p-8">
-          <Manual />
-          <Ghost className="justify-start" onClick={() => setScreen({ t: "companion" })}>
-            Para quem acompanha
-          </Ghost>
-        </div>
-      </aside>
+      {atGate ? null : (
+        <aside className="hidden bg-ink lg:block">
+          <div className="sticky top-0 flex max-h-dvh flex-col gap-4 overflow-auto p-8">
+            <Manual />
+          </div>
+        </aside>
+      )}
     </div>
   );
 }
@@ -89,14 +56,6 @@ function ScreenBody({ screen }: { screen: ReturnType<typeof useCalibre.getState>
       <div className="flex flex-1 flex-col">
         <Top title="A linha" onBack={() => setScreen(progress.name ? { t: "map" } : { t: "gate" })} />
         <Manual />
-      </div>
-    );
-  }
-  if (screen.t === "companion") {
-    return (
-      <div className="flex flex-1 flex-col">
-        <Top title="Acompanhamento" onBack={() => setScreen(progress.name ? { t: "map" } : { t: "gate" })} />
-        <CompanionNote />
       </div>
     );
   }
@@ -192,16 +151,8 @@ function Gate() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <Top title="Calibre" kicker="Equações de primeiro grau, no ritmo de uma linha." />
-      <div className="space-y-4 text-base leading-relaxed">
-        <p>
-          Uma linha de agência precisa saber quantas operações cabem por minuto. Isso se escreve com uma letra: o
-          número que ainda não foi medido.
-        </p>
-        <p>Calibre é um turno curto para ler essa escrita e deixar a letra sozinha. Sem prova. Sem pressa.</p>
-        <p>Se você acompanha uma frase até o fim, já acompanha uma equação. O resto é o mesmo gesto, dos dois lados.</p>
-        <p className="text-muted">Pode errar. Uma jogada que preserva a igualdade continua sendo matemática.</p>
-      </div>
+      <Top title="Calibre" kicker="Equações de primeiro grau." />
+      <p className="text-base leading-relaxed">Isola a letra. Se sair no meio, o turno fica neste aparelho.</p>
       <form
         className="mt-8"
         onSubmit={(event) => {
@@ -211,27 +162,21 @@ function Gate() {
         }}
       >
         <label className="block text-sm text-muted" htmlFor="turno-name">
-          Seu nome no turno
+          Seu nome
         </label>
         <input
           id="turno-name"
           value={name}
           onChange={(event) => setLocal(event.target.value)}
           maxLength={24}
-          placeholder="Pode ficar em branco"
+          placeholder="Opcional"
+          autoComplete="nickname"
           className="mt-2 min-h-12 w-full rounded-card border border-line bg-panel px-4 text-bone outline-none placeholder:text-faint"
         />
         <div className="mt-4">
-          <Primary type="submit">Entrar na linha</Primary>
+          <Primary type="submit">Começar</Primary>
         </div>
       </form>
-      <Ghost className="mt-2 w-full" onClick={() => setScreen({ t: "note" })}>
-        Como a linha funciona
-      </Ghost>
-      <Ghost className="w-full" onClick={() => setScreen({ t: "companion" })}>
-        Para quem acompanha
-      </Ghost>
-      <p className="mt-auto pt-8 text-sm text-faint">Dá para sair no meio. O turno fica neste aparelho.</p>
     </div>
   );
 }
@@ -355,7 +300,7 @@ function Map() {
         ) : null}
         {progress.modelDone ? (
           <Ghost className="w-full justify-start" onClick={() => progress.setScreen({ t: "debrief" })}>
-            Nota de turno
+            Folha do turno
           </Ghost>
         ) : null}
         <Ghost className="w-full justify-start" onClick={() => progress.setScreen({ t: "note" })}>
@@ -420,15 +365,12 @@ function Debrief() {
   return (
     <div className="flex flex-1 flex-col">
       <Top
-        title={progress.modelDone ? "Linha em ritmo" : "Nota de turno"}
-        kicker={progress.name ? `Turno de ${progress.name}` : "Turno"}
+        title="Linha em ritmo"
+        kicker={progress.name ? progress.name : "Turno"}
         onBack={() => progress.setScreen({ t: "map" })}
         lamps={lamps}
       />
-      <p className="text-base leading-relaxed">
-        Você leu expressões, trocou letra por número e isolou a incógnita sem romper a igualdade. Não foi prova.
-        Foi ajuste.
-      </p>
+      <p className="text-base leading-relaxed">A folha ficou com o que você isolou.</p>
       {progress.notebook.length > 0 ? (
         <div className="mt-5 rounded-card bg-bone p-4 text-ink-bone">
           <p className="text-xs font-semibold tracking-widest text-quiet">FOLHA DO TURNO</p>
@@ -439,10 +381,6 @@ function Debrief() {
           </ul>
         </div>
       ) : null}
-      <article className="mt-4 rounded-card border border-line bg-panel p-4">
-        <p className="text-xs font-semibold tracking-widest text-amber">PARA A PRÓXIMA AULA</p>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{lessonNote(progress)}</p>
-      </article>
       <div className="mt-auto space-y-2 pt-6">
         {!progress.model2Done ? (
           <Primary onClick={() => progress.setScreen({ t: "model", which: 2 })}>Segundo chamado</Primary>
